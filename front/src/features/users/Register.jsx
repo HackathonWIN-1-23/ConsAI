@@ -6,7 +6,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectRegisterError, selectRegisterLoading} from './usersSlice';
 import {googleLogin, register} from './usersThunks';
 import {LoadingButton} from "@mui/lab";
-import FileInput from "../../components/UI/FileInput/FileInput";
 import {GoogleLogin} from "@react-oauth/google";
 
 const Register = () => {
@@ -19,7 +18,6 @@ const Register = () => {
     username: '',
     password: '',
     displayName: '',
-    avatar: null
   });
 
   const inputChangeHandler = (event) => {
@@ -40,13 +38,6 @@ const Register = () => {
     } catch (e) {
       // error happened
     }
-  };
-
-  const fileInputChangeHandler = (e) => {
-    const {name, files} = e.target;
-    setState(prevState => ({
-      ...prevState, [name]: files && files[0] ? files[0] : null,
-    }));
   };
 
   const getFieldError = (fieldName) => {
@@ -121,10 +112,6 @@ const Register = () => {
                 helperText={getFieldError('password')}
               />
             </Grid>
-          </Grid>
-          <Grid item xs={12} sx={{mt: 2}}>
-            <FileInput onChange={fileInputChangeHandler} name="avatar" label="Avatar"
-                       error={Boolean(getFieldError('avatar'))} helperText={getFieldError('avatar')}/>
           </Grid>
           <LoadingButton
             type="submit"

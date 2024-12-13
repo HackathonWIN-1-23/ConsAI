@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import {Avatar, Button, CircularProgress, Menu, MenuItem} from '@mui/material';
+import {Button, CircularProgress, Menu, MenuItem} from '@mui/material';
 import { logout } from '../../../features/users/usersThunks';
 import {selectLogoutLoading} from "../../../features/users/usersSlice";
-import {apiURL} from "../../../constants";
 import {useDispatch, useSelector} from "react-redux";
 
 const UserMenu = ({user}) => {
@@ -27,7 +26,7 @@ const UserMenu = ({user}) => {
         onClick={handleClick}
         color="inherit"
       >
-        Hello, {user.displayName} <Avatar sx={{ml: 2}} src={apiURL + '/' + user.avatar} alt={user.username}/>
+        Hello, {user.displayName}
       </Button>
       <Menu
         anchorEl={anchorEl}
