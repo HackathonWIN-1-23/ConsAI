@@ -17,7 +17,7 @@ const Register = () => {
   const [state, setState] = useState({
     username: '',
     password: '',
-    displayName: '',
+    email: '',
   });
 
   const inputChangeHandler = (event) => {
@@ -80,7 +80,7 @@ const Register = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                label="Email"
+                label="Username"
                 name="username"
                 autoComplete="new-username"
                 value={state.username} required
@@ -92,12 +92,12 @@ const Register = () => {
             <Grid item xs={12}>
               <TextField
                 required
-                name="displayName"
-                label="Display Name"
-                value={state.displayName}
+                name="email"
+                label="Email"
+                value={state.email}
                 onChange={inputChangeHandler}
-                error={Boolean(getFieldError('displayName'))}
-                helperText={getFieldError('displayName')}
+                error={Boolean(getFieldError('email'))}
+                helperText={getFieldError('email')}
               />
             </Grid>
             <Grid item xs={12}>

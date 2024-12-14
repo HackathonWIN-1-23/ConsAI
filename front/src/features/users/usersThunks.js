@@ -16,7 +16,7 @@ export const register = createAsyncThunk(
           formData.append(key, value);
         }
       });
-      const response = await axiosApi.post('/users', formData);
+      const response = await axiosApi.post('/api/auth/register/', formData);
       return response.data;
     } catch (e) {
       if (isAxiosError(e) && e.response && e.response.status === 400) {
@@ -32,7 +32,7 @@ export const login = createAsyncThunk(
   'users/login',
   async (loginMutation, {rejectWithValue}) => {
     try {
-      const response = await axiosApi.post('/users/sessions', loginMutation);
+      const response = await axiosApi.post('/api/auth/login/', loginMutation);
       return response.data.user;
     } catch (e) {
       if (isAxiosError(e) && e.response && e.response.status === 400) {

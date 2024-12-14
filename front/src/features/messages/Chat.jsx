@@ -1,31 +1,50 @@
-import React, { useState } from 'react';
-import { Box, TextField, Typography, List, ListItem } from '@mui/material';
+import React, {useEffect, useState} from 'react';
+import {Box, TextField, Typography, List, ListItem} from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import {LoadingButton} from "@mui/lab";
 import axiosApi from "../../axiosApi";
 
 const Chat = () => {
     const [messages, setMessages] = useState([
-        { text: 'Привет! Как ты?', sender: 'user' },
-        { text: 'Здравствуйте! Я искусственный интеллект, готов помочь вам.', sender: 'bot' },
+        {message: 'Привет! Как ты?', sender: 'user'},
+        {message: 'Здравствуйте! Я искусственный интеллект, готов помочь вам.', sender: 'bot'},
     ]);
+    const [number, setNumber] = useState(1)
+    const [chatId, setChatId] = useState('');
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    useEffect(async () => {
+        try {
+            setIsLoading(true);
+            const response = await axiosApi.get('/api/chat/create_chat/');
+            console.log(response);
+
+            setChatId(response.data.chat_id);
+        } catch (error) {
+            const errorMessage = {message: 'Ошибка: не удалось получить ответ от сервера.', sender: 'bot'};
+            setMessages((prevMessages) => [...prevMessages, errorMessage]);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
     const handleSend = async () => {
         if (input.trim()) {
-            const userMessage = { text: input, sender: 'user' };
+            const userMessage = {message: input, sender: 'user'};
             setMessages([...messages, userMessage]);
             setInput('');
 
             try {
                 setIsLoading(true);
-                const response = await axiosApi.post('/getai', { text: input });
+                console.log(chatId, input);
+                const response = await axiosApi.post('/api/chat/chating/', {id_chat: chatId, message: input, number: number});
+                setNumber(number + 1);
 
-                const botMessage = { text: response.data.text, sender: 'bot' };
+                const botMessage = {message: response.data.message, sender: 'bot'};
                 setMessages((prevMessages) => [...prevMessages, botMessage]);
             } catch (error) {
-                const errorMessage = { text: 'Ошибка: не удалось получить ответ от сервера.', sender: 'bot' };
+                const errorMessage = {message: 'Ошибка: не удалось получить ответ от сервера.', sender: 'bot'};
                 setMessages((prevMessages) => [...prevMessages, errorMessage]);
             } finally {
                 setIsLoading(false);
@@ -80,7 +99,7 @@ const Chat = () => {
                                 color: message.sender === 'user' ? '#fff' : '#000',
                             }}
                         >
-                            {message.text}
+                            {message.message}
                         </Box>
                     </ListItem>
                 ))}
@@ -103,7 +122,7 @@ const Chat = () => {
                     disabled={isLoading}
                 />
                 <LoadingButton variant="contained" onClick={handleSend} disabled={isLoading} loading={isLoading}>
-                    <SendIcon />
+                    <SendIcon/>
                 </LoadingButton>
             </Box>
         </Box>

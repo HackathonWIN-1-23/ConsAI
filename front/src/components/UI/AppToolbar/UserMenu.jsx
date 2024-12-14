@@ -26,7 +26,7 @@ const UserMenu = ({user}) => {
         onClick={handleClick}
         color="inherit"
       >
-        Hello, {user.displayName}
+        Hello, {user.username}
       </Button>
       <Menu
         anchorEl={anchorEl}
